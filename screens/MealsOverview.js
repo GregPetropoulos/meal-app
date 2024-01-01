@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
-import { MEALS } from '../data/dummy-data';
+import { MEALS, CATEGORIES } from '../data/dummy-data';
 import MealItem from '../component/MealItem';
 // import { useRoute } from '@react-navigation/native';
 
-const MealsOverview = ({ route }) => {
+const MealsOverview = ({ route, navigation }) => {
   /*
   Alternative hook    
   const route = useRoute()
@@ -15,9 +15,21 @@ const MealsOverview = ({ route }) => {
   const displayedMeals = MEALS.filter((mealItem) => {
     return mealItem.categoryIds.indexOf(catId) >= 0;
   });
+
+  // Setting category title with useLayoutEffect due to title chunking UI
+  // useLayoutEffect is mounted at the same time the component execution, rather than useEffect after the component renders
+  useLayoutEffect(() => {
+    const categoryTitle = CATEGORIES.find(
+      (category) => category.id === catId
+    ).title;
+    // side effect here
+    navigation.setOptions({ title: categoryTitle });
+  }, [catId, navigation]);
+
   const renderMealItem = (itemData) => {
     const item = itemData.item;
     const mealItemProps = {
+      id: item.id,
       title: item.title,
       imageUrl: item.imageUrl,
       affordability: item.affordability,
