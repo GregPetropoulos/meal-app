@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Button } from 'react-native';
 import CategoryScreen from './screens/CategoryScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -42,15 +42,14 @@ export default function App() {
             //   };
             // }}
           />
-           <Stack.Screen
+          <Stack.Screen
             name='MealDetail'
             component={MealDetailScreen}
-            // One way to use options as a function
-            // options={({ route, navigation }) => {
-            //   const catId = route.params.categoryId;
-            //   return {
-            //     title: catId
-            //   };
+            //IMP for The button in the header is only applicable if no UX is needed from the MealDetailScreen 
+            // options={{
+            //   headerRight: ()=> {
+            //     return <Button color='white' title='Tap Me' onPress={()=> console.log('PRESSED')}/>
+            //   }
             // }}
           />
         </Stack.Navigator>

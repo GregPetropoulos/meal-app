@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView } from 'react-native';
 import { MEALS } from '../data/dummy-data';
 import MealDetails from '../component/MealDetails';
 import MealSubtitle from '../component/MealDetail/MealSubtitle';
 import MealDetailList from '../component/MealDetail/MealDetailList';
+import IconButton from '../component/IconButton';
 
-const MealDetailScreen = ({ route }) => {
+const MealDetailScreen = ({ route, navigation }) => {
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((selected) => selected.id === mealId);
+
+  //*IMP FOR ADDING A BUTTON TO HEADER OF THIS PAGE
+  const headerButtonPressHandler = () => {
+    console.log('PRESSED');
+  };
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <IconButton
+            onPress={headerButtonPressHandler}
+            color='white'
+            icon='star'
+          />
+        );
+      }
+    });
+  }, [navigation, headerButtonPressHandler]);
+
   return (
-    (<ScrollView style={styles.rootContainer}>
+    <ScrollView style={styles.rootContainer}>
       {/* Dont forget to always set a width and height when fetching images over the network */}
       <Image source={{ uri: selectedMeal?.imageUrl }} style={styles.image} />
       <Text style={styles.title}>{selectedMeal.title}</Text>
@@ -30,7 +50,7 @@ const MealDetailScreen = ({ route }) => {
         complexity={selectedMeal.complexity}
         textStyle={styles.detailTextStyle}
       />
-    </ScrollView>)
+    </ScrollView>
   );
 };
 
