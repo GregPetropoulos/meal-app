@@ -7,6 +7,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import MealsOverviewScreen from './screens/MealsOverview';
 import MealDetailScreen from './screens/MealDetailScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
+import { Ionicons } from '@expo/vector-icons';
 
 // When inside of a child component like CategoryGridTitle and need navigation use the useNavigation hook from @react-navigation/native
 const Stack = createNativeStackNavigator();
@@ -20,13 +21,31 @@ function DrawerNavigator() {
         headerStyle: { backgroundColor: '#351401' },
         headerTintColor: 'white',
         // contentStyle: { backgroundColor: '3f2f25' } for unknown reason this was renamed to sceneContainerStyle
-        sceneContainerStyle: { backgroundColor: '3f2f25' }
-
+        sceneContainerStyle: { backgroundColor: '#3f2f25' },
+        drawerContentStyle: { backgroundColor: '#351401' },
+        drawerInactiveTintColor: 'white',
+        drawerActiveTintColor: '#351401',
+        drawerActiveBackgroundColor: '#e4baa1'
       }}>
-      <Drawer.Screen name='Categories' component={CategoryScreen} options={{
-        title:'All Categories'
-      }} />
-      <Drawer.Screen name='Favorites' component={FavoritesScreen} />
+      <Drawer.Screen
+        name='Categories'
+        component={CategoryScreen}
+        options={{
+          title: 'All Categories',
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name='list' color={color} size={size} />
+          )
+        }}
+      />
+      <Drawer.Screen
+        name='Favorites'
+        component={FavoritesScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name='star' color={color} size={size} />
+          )
+        }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -75,7 +94,7 @@ export default function App() {
             name='MealDetail'
             component={MealDetailScreen}
             options={{
-              title:'About the Meal'
+              title: 'About the Meal'
             }}
             //IMP for The button in the header is only applicable if no UX is needed from the MealDetailScreen
             // options={{
