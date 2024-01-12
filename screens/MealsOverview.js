@@ -28,6 +28,7 @@ const MealsOverview = ({ route, navigation }) => {
 
   const renderMealItem = (itemData) => {
     const item = itemData.item;
+
     const mealItemProps = {
       id: item.id,
       title: item.title,
@@ -38,6 +39,7 @@ const MealsOverview = ({ route, navigation }) => {
     };
     return <MealItem {...mealItemProps} />;
   };
+  
   return (
     <View style={styles.container}>
       <FlatList
