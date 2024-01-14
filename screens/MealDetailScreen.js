@@ -5,23 +5,51 @@ import MealDetails from '../component/MealDetails';
 import MealSubtitle from '../component/MealDetail/MealSubtitle';
 import MealDetailList from '../component/MealDetail/MealDetailList';
 import IconButton from '../component/IconButton';
-import { FavoritesContext } from '../store/context/favorites-context';
+
+// Global State management
+// =======================
+// CONTEXT IMP
+// import { FavoritesContext } from '../store/context/favorites-context';
+
+// REDUX IMP
+import { useSelector, useDispatch } from 'react-redux';
+// Actions that will be dispatched to the store
+import { addFavorite, removeFavorite } from '../store/redux/favorites';
 
 const MealDetailScreen = ({ route, navigation }) => {
-  const favoriteMealsCtx = useContext(FavoritesContext);
+  // REDUX IMP
+  // These are the same
+  // const favoriteMealIds = useSelector(state => state.favoriteMeals.id)
+  const { ids } = useSelector((state) => state.favoriteMeals);
+  const dispatch = useDispatch();
+
+  // CONTEXT IMP
+  // const favoriteMealsCtx = useContext(FavoritesContext);
 
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((selected) => selected.id === mealId);
 
-  const mealIsFavorite = favoriteMealsCtx.ids.includes(mealId);
+  // CONTEXT IMP
+  // const mealIsFavorite = favoriteMealsCtx.ids.includes(mealId);
+
+  // REDUX IMP
+  const mealIsFavorite = ids.includes(mealId);
 
   //*IMP FOR ADDING A BUTTON TO HEADER OF THIS PAGE
   const changeFavoriteStatusHandler = () => {
     if (mealIsFavorite) {
-      favoriteMealsCtx.removeFavorite(mealId);
+      // REDUX IMP
+      // because the action payload must be an object, set an id property here
+      dispatch(removeFavorite({ id: mealId }));
+
+      // CONTEXT IMP
+      // favoriteMealsCtx.removeFavorite(mealId);
     } else {
-      favoriteMealsCtx.addFavorite(mealId);
+      // REDUX IMP
+      dispatch(addFavorite({ id: mealId }));
+      // CONTEXT IMP
+      // favoriteMealsCtx.addFavorite(mealId);
     }
   };
   useLayoutEffect(() => {
@@ -31,7 +59,7 @@ const MealDetailScreen = ({ route, navigation }) => {
           <IconButton
             onPress={changeFavoriteStatusHandler}
             icon={mealIsFavorite ? 'star' : 'star-outline'}
-            color={mealIsFavorite?'yellow' :'white'}
+            color={mealIsFavorite ? 'yellow' : 'white'}
           />
         );
       }

@@ -1,14 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button } from 'react-native';
-import CategoryScreen from './screens/CategoryScreen';
+
+// Navigators
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+
+// Screens
+import CategoryScreen from './screens/CategoryScreen';
 import MealsOverviewScreen from './screens/MealsOverview';
 import MealDetailScreen from './screens/MealDetailScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
 import { Ionicons } from '@expo/vector-icons';
-import FavoritesContextProvider from './store/context/favorites-context';
+
+//Global State Management
+// ====================
+// CONTEXT IMP
+// import FavoritesContextProvider from './store/context/favorites-context';
+// REDUX IMP
+import { Provider } from 'react-redux';
+import { store } from './store/redux/store';
+// ====================
 
 // When inside of a child component like CategoryGridTitle and need navigation use the useNavigation hook from @react-navigation/native
 const Stack = createNativeStackNavigator();
@@ -55,7 +66,10 @@ export default function App() {
   return (
     <>
       <StatusBar style='light' />
-      <FavoritesContextProvider>
+      {/* Uncomment for Redux  provider use */}
+      <Provider store={store}>
+      {/* Uncomment for context provider use */}
+      {/* <FavoritesContextProvider> */}
         <NavigationContainer>
           <Stack.Navigator
             // Default styles for all screens
@@ -107,7 +121,9 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
-      </FavoritesContextProvider>
+      {/* </FavoritesContextProvider> */}
+      </Provider>
+
     </>
   );
 }
