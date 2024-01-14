@@ -1,8 +1,7 @@
 import React, { useLayoutEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
 import { MEALS, CATEGORIES } from '../data/dummy-data';
-import MealItem from '../component/MealItem';
 // import { useRoute } from '@react-navigation/native';
+import MealsList from '../component/MealList/MealsList';
 
 const MealsOverview = ({ route, navigation }) => {
   /*
@@ -11,6 +10,7 @@ const MealsOverview = ({ route, navigation }) => {
          route.params.categoryId
          In screen components pass the route prop else in nested components that are not screen components use the useRoute Hook
   */
+// Matching up the id in the data with the id in the route params from the navigator
   const catId = route.params.categoryId;
   const displayedMeals = MEALS.filter((mealItem) => {
     return mealItem.categoryIds.indexOf(catId) >= 0;
@@ -26,35 +26,7 @@ const MealsOverview = ({ route, navigation }) => {
     navigation.setOptions({ title: categoryTitle });
   }, [catId, navigation]);
 
-  const renderMealItem = (itemData) => {
-    const item = itemData.item;
-
-    const mealItemProps = {
-      id: item.id,
-      title: item.title,
-      imageUrl: item.imageUrl,
-      affordability: item.affordability,
-      complexity: item.complexity,
-      duration: item.duration
-    };
-    return <MealItem {...mealItemProps} />;
-  };
-  
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={displayedMeals}
-        keyExtractor={(item) => item.id}
-        renderItem={renderMealItem}
-      />
-    </View>
-  );
+  return <MealsList displayedMeals={displayedMeals} />;
 };
 
 export default MealsOverview;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-    // padding: 16
-  }
-});
